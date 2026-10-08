@@ -1,0 +1,8 @@
+-- After you register a normal account, find the UUID in:
+-- Supabase -> Authentication -> Users
+--
+-- Then run:
+--
+-- update public.profiles
+-- set role = 'organizer'
+-- where id = 'YOUR_USER_UUID';
