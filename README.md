@@ -1,105 +1,96 @@
-# Football Session
+# ⚽ Football Session
 
-Football Session is a full-stack football session and team registration app built with:
+Football Session is a full-stack web platform for organizing football sessions, registering teams, managing player rosters, and handling team deposits.
 
-- Next.js
-- TypeScript
-- Tailwind CSS
-- Supabase Auth
-- Supabase PostgreSQL
-- Supabase Row Level Security
+The platform is designed for football organizers and team captains. Organizers can create and manage football sessions, while captains can register their teams, pay the required deposit, and manage their player lists.
 
-## Features included
+Visitors can also browse available football sessions and view registered teams and their player rosters without creating an account.
 
-- Captain account registration/login
-- Organizer role
-- Football session listing
-- Session details
-- Team registration
-- Deposit/payment status
-- Team player name management
-- Organizer session creation
-- Organizer payment verification
-- Basic round-robin fixture generator
-- RLS policies and database constraints
+---
 
-## Setup
+## ✨ Features
 
-1. Install Node.js LTS.
-2. Create a Supabase project.
-3. Open Supabase SQL Editor.
-4. Run `supabase/schema.sql`.
-5. Copy `.env.example` to `.env.local`.
-6. Put your Supabase URL and publishable key into `.env.local`.
-7. Run:
+### 👤 Authentication
 
-```bash
-npm install
-npm run dev
-```
+- Captain account registration and login
+- Organizer accounts
+- Secure authentication with Supabase Auth
+- Automatic profile creation after registration
+- Protected captain and organizer actions
+- Logout functionality
 
-Then open http://localhost:3000
+### ⚽ Football Sessions
 
-## Making an Organizer
+Organizers can create football sessions with:
 
-New accounts are created as `captain` by default.
+- Session name
+- Match date
+- Start and end time
+- Venue
+- Match format
+- Number of teams
+- Players per team
+- Registration deposit
+- Session status
+- Description
 
-After registering, run this in Supabase SQL Editor:
+Supported formats include:
 
-```sql
-update public.profiles
-set role = 'organizer'
-where id = 'YOUR_USER_UUID';
-```
+- 7-a-side
+- 11-a-side
 
-## Important
+Organizers can also:
 
-Do not put a Supabase service role key into `.env.local` for browser use.
-Use the publishable key and keep RLS enabled.
+- Edit sessions
+- Delete sessions
+- Change session status
+- Update team limits
+- Change player limits
+- Change the required deposit
 
+---
 
-## Stripe payment setup
+## 🏆 Team Registration
 
-The project now includes a secure card checkout using Stripe PaymentIntents + Stripe Elements.
+Captains can:
 
-Stripe's Payment Element renders the card number, expiry, and CVC fields inside Stripe's secure UI; the Football Session server does not receive the raw card number. The app uses Stripe.js Elements with a PaymentIntent so the card fields are handled by Stripe and the server receives only the payment result. See:
-- https://docs.stripe.com/payments/payment-element
-- https://docs.stripe.com/payments/quickstart
+- Browse available football sessions
+- Register a team
+- Choose a team name
+- Pay the required deposit
+- View their team
+- Edit their team
+- Delete their team
+- Manage their player list
 
-Add these variables to `.env.local`:
+A team initially starts with:
 
-```env
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-```
+> 🟡 Pending Payment
 
-The deposit amount is taken from the session's `deposit_amount` in Supabase and converted to MYR cents for Stripe.
+After a successful payment:
 
-## Payment flow
+> 🟢 Confirmed
 
-Captain registers a team
-→ Pending Payment
-→ Pay Deposit
-→ Stripe card form
-→ Successful payment
-→ team becomes Confirmed
+Only confirmed teams are treated as fully registered.
 
-For production, use a Stripe webhook as the authoritative payment confirmation mechanism rather than relying only on the browser return page. The included return page uses the server-only Supabase service-role key to finalize a paid checkout, so that key must never be exposed to the browser.
+---
 
+## 👥 Player Management
 
-### Management permissions
+Players do not need to create accounts.
 
-- Organizers can edit and delete sessions they created.
-- Captains can edit their own team name.
-- Captains can rename players, remove players, and add new players up to the session limit.
-- RLS prevents users from changing other users' sessions or teams.
+The team captain simply enters their names.
 
+For example:
 
-### Team roster visibility
+```text
+FC Tigers
 
-Authenticated users can open any registered team from a session and view its current player list. Only the captain can edit the team or its players.
-
-
-### Public team rosters
-
-Visitors do not need an account to view registered teams and player lists. Sign-in is only required for captain actions such as registering a team, editing a team, adding/removing players, and making payments.
+1. Ahmad
+2. Faris
+3. Zulkifli
+4. Amir
+5. Hakim
+6. Danial
+7. Syafiq
+8. Iman
