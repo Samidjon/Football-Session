@@ -36,6 +36,12 @@ export default function HomePage() {
               >
                 Become a captain
               </Link>
+              <Link
+                href="/individuals"
+                className="rounded-xl border border-[#ffcf27]/35 px-5 py-3 font-semibold text-[#ffcf27] transition hover:bg-[#ffcf27]/10"
+              >
+                Explore Individuals
+              </Link>
             </div>
 
             <a

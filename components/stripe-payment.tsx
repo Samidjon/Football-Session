@@ -13,7 +13,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
 );
 
-export function StripePayment({ teamId }: { teamId: string }) {
+export function StripePayment({ teamId, mode = "session" }: { teamId: string; mode?: "session" | "individual" }) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -24,10 +24,10 @@ export function StripePayment({ teamId }: { teamId: string }) {
     async function createIntent() {
       try {
         setLoading(true);
-        const response = await fetch("/api/stripe/create-payment-intent", {
+        const response = await fetch(mode === "individual" ? "/api/stripe/create-individual-payment-intent" : "/api/stripe/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ teamId })
+          body: JSON.stringify(mode === "individual" ? { individualTeamId: teamId } : { teamId })
         });
 
         const data = await response.json();
@@ -58,7 +58,7 @@ export function StripePayment({ teamId }: { teamId: string }) {
     return () => {
       cancelled = true;
     };
-  }, [teamId]);
+  }, [teamId, mode]);
 
   if (loading) {
     return (

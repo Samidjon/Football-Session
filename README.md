@@ -1,40 +1,3 @@
-# ⚽ Football Session
-
-Football Session is a full-stack web platform for organizing football sessions, registering teams, managing player rosters, and handling team deposits.
-
-The platform is designed for football organizers and team captains. Organizers can create and manage football sessions, while captains can register their teams, pay the required deposit, and manage their player lists.
-
-Visitors can also browse available football sessions and view registered teams and their player rosters without creating an account.
-
----
-
-## ✨ Features
-
-### 👤 Authentication
-
-- Captain account registration and login
-- Organizer accounts
-- Secure authentication with Supabase Auth
-- Automatic profile creation after registration
-- Protected captain and organizer actions
-- Logout functionality
-
-### ⚽ Football Sessions
-
-Organizers can create football sessions with:
-
-- Session name
-- Match date
-- Start and end time
-- Venue
-- Match format
-- Number of teams
-- Players per team
-- Registration deposit
-- Session status
-- Description
-
-Supported formats include:
 # ⚽ MOTM — Football Sessions
 
 MOTM is a football session and team management platform for organizers and team captains. Visitors can browse public sessions and view team lineups; captains can register a team, manage player names, and pay a session deposit.
@@ -106,64 +69,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 New accounts are created as captains by default. To grant organizer access, find the account UUID in **Supabase → Authentication → Users** and run:
 
-- 7-a-side
-- 11-a-side
-
-Organizers can also:
-
-- Edit sessions
-- Delete sessions
-- Change session status
-- Update team limits
-- Change player limits
-- Change the required deposit
-
----
-
-## 🏆 Team Registration
-
-Captains can:
-
-- Browse available football sessions
-- Register a team
-- Choose a team name
-- Pay the required deposit
-- View their team
-- Edit their team
-- Delete their team
-- Manage their player list
-
-A team initially starts with:
-
-> 🟡 Pending Payment
-
-After a successful payment:
-
-> 🟢 Confirmed
-
-Only confirmed teams are treated as fully registered.
-
----
-
-## 👥 Player Management
-
-Players do not need to create accounts.
-
-The team captain simply enters their names.
-
-For example:
-
-```text
-FC Tigers
-
-1. Ahmad
-2. Faris
-3. Zulkifli
-4. Amir
-5. Hakim
-6. Danial
-7. Syafiq
-8. Iman
+```sql
+update public.profiles
+set role = 'organizer'
+where id = 'YOUR_USER_UUID';
+```
 
 Then visit `/organizer` while logged into that account.
 
@@ -190,4 +100,17 @@ Use Stripe test keys until payment handling has been tested end-to-end. Before a
 ## License
 
 MOTM project. Add a license file before distributing the source under an open-source license.
- (Rebrand Football Session to MOTM)
+
+
+## Individuals
+
+The **Individuals** area lets captains create a public squad with up to 30 players without attaching it to a particular session. Visitors can view the team roster without logging in. Captains can add, rename, and remove players. A new team is public immediately but remains **Not counted** until its deposit is successfully paid through Stripe; after payment it changes to **Counted**. Captains can pay later from the team page. Organizers can configure the deposit from `/organizer/individuals`.
+
+## Appearance
+
+The navigation includes a light/dark theme toggle. The selected theme is remembered in the browser.
+
+
+## Language support
+
+The interface defaults to Bahasa Melayu (BM). Users can switch to English (EN) from the top navigation; their preference is saved in the browser.

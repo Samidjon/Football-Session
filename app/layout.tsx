@@ -30,7 +30,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ms" suppressHydrationWarning>
+      <head>
+        <script
+          id="motm-theme-init"
+          dangerouslySetInnerHTML={{
+            __html: `try {
+            document.documentElement.dataset.theme = localStorage.getItem("motm-theme") === "light" ? "light" : "dark";
+            document.documentElement.lang = localStorage.getItem("motm-language") === "en" ? "en" : "ms";
+          } catch {
+            document.documentElement.dataset.theme = "dark";
+            document.documentElement.lang = "ms";
+          }`
+          }}
+        />
+      </head>
       <body>
         <Navbar />
         {children}

@@ -46,12 +46,20 @@ export default async function OrganizerPage() {
           </p>
         </div>
 
-        <Link
-          href="/organizer/sessions/new"
-          className="rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black hover:bg-[#ffe477]"
-        >
-          Create session
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/organizer/individuals"
+            className="rounded-xl border border-zinc-700 px-4 py-3 font-semibold hover:bg-zinc-800"
+          >
+            Individual settings
+          </Link>
+          <Link
+            href="/organizer/sessions/new"
+            className="rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black hover:bg-[#ffe477]"
+          >
+            Create session
+          </Link>
+        </div>
       </div>
 
       <div className="mt-8 space-y-4">

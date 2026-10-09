@@ -22,3 +22,12 @@ where id = 'YOUR_USER_UUID';
 Add the required environment variables in **Project Settings → Environment Variables**, select Production, then redeploy. Set the Vercel domain in **Supabase → Authentication → URL Configuration**.
 
 Before taking real payments, switch Stripe to Live only after testing payment flows and confirming the webhook, refunds/cancellations, and payout bank details are ready.
+
+
+## New Individuals feature migration
+
+For an existing Supabase project, run this migration in SQL Editor:
+
+`supabase/migrations/20261009_individuals_and_theme.sql`
+
+This creates the public Individuals directory, a default RM50 deposit (editable by an Organizer), team rosters limited to 30 players, and database access rules. After deployment, test public browsing while logged out and captain creation/payment while logged in.
