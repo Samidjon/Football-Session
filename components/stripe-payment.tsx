@@ -86,7 +86,7 @@ export function StripePayment({ teamId }: { teamId: string }) {
         appearance: {
           theme: "night",
           variables: {
-            colorPrimary: "#22c55e",
+            colorPrimary: "#ffcf27",
             colorBackground: "#09090b",
             colorText: "#f4f4f5",
             colorTextSecondary: "#a1a1aa",
@@ -163,13 +163,13 @@ function PaymentForm() {
       <button
         type="submit"
         disabled={loading || !stripe || !elements}
-        className="w-full rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+        className="w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
       >
         {loading ? "Processing payment..." : "Pay deposit"}
       </button>
 
       <p className="text-center text-xs leading-5 text-zinc-600">
-        Your card details are handled by Stripe and are not stored in the Football Session database.
+        Your card details are handled by Stripe and are not stored in the MOTM database.
       </p>
     </form>
   );

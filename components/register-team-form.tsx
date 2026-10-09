@@ -46,7 +46,7 @@ export function RegisterTeamForm({ sessionId }: { sessionId: string }) {
           value={teamName}
           onChange={(event) => setTeamName(event.target.value)}
           placeholder="FC Tigers"
-          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
         />
       </label>
 
@@ -58,7 +58,7 @@ export function RegisterTeamForm({ sessionId }: { sessionId: string }) {
 
       <button
         disabled={loading}
-        className="mt-5 w-full rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+        className="mt-5 w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
       >
         {loading ? "Registering..." : "Register team"}
       </button>

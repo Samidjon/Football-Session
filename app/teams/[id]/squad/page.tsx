@@ -48,7 +48,7 @@ export default async function TeamSquadPage({
       <div className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-green-400">
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#ffcf27]">
               Team squad
             </p>
             <h1 className="mt-2 text-4xl font-black">{team.team_name}</h1>
@@ -60,7 +60,7 @@ export default async function TeamSquadPage({
           <span
             className={`rounded-full px-3 py-1 text-sm font-semibold ${
               team.registration_status === "confirmed"
-                ? "bg-green-500/10 text-green-400"
+                ? "bg-[#ffcf27]/10 text-[#ffcf27]"
                 : "bg-yellow-500/10 text-yellow-300"
             }`}
           >
@@ -71,7 +71,7 @@ export default async function TeamSquadPage({
         </div>
 
         <div className="mt-8 flex items-center gap-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ffcf27]/10 text-[#ffcf27]">
             <Users size={21} />
           </div>
           <div>

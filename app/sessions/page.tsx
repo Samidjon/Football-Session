@@ -30,7 +30,7 @@ export default async function SessionsPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 py-12">
       <div>
-        <p className="font-semibold text-green-400">FOOTBALL SESSIONS</p>
+        <p className="font-semibold text-[#ffcf27]">MOTM SESSIONS</p>
         <h1 className="mt-2 text-4xl font-black">Find a game</h1>
         <p className="mt-3 max-w-2xl text-zinc-400">
           Browse open sessions and register your team as captain.

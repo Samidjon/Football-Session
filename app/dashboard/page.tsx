@@ -28,7 +28,7 @@ export default async function DashboardPage() {
     <main className="mx-auto max-w-7xl px-6 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="font-semibold text-green-400">CAPTAIN DASHBOARD</p>
+          <p className="font-semibold text-[#ffcf27]">CAPTAIN DASHBOARD</p>
           <h1 className="mt-2 text-4xl font-black">
             Welcome, {profile?.full_name ?? "Captain"} 👋
           </h1>
@@ -42,7 +42,7 @@ export default async function DashboardPage() {
             Browse sessions
           </Link>
           {profile?.role === "organizer" && (
-            <Link href="/organizer" className="rounded-xl bg-green-500 px-4 py-2 text-sm font-semibold text-black hover:bg-green-400">
+            <Link href="/organizer" className="rounded-xl bg-[#ffcf27] px-4 py-2 text-sm font-semibold text-black hover:bg-[#ffe477]">
               Organizer
             </Link>
           )}
@@ -80,9 +80,9 @@ export default async function DashboardPage() {
                 <Link
                   key={team.id}
                   href={`/teams/${team.id}`}
-                  className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-green-500/40"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-[#ffcf27]/50"
                 >
-                  <p className="text-sm text-green-400">{session?.title ?? "Football session"}</p>
+                  <p className="text-sm text-[#ffcf27]">{session?.title ?? "Football session"}</p>
                   <h3 className="mt-2 text-xl font-bold">{team.team_name}</h3>
                   <p className="mt-3 text-sm text-zinc-400">
                     {team.registration_status === "confirmed"

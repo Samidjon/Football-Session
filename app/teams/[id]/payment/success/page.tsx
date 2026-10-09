@@ -79,7 +79,7 @@ export default async function PaymentSuccessPage({
 
       return (
         <main className="mx-auto max-w-xl px-6 py-20 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10 text-green-400">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#ffcf27]/10 text-[#ffcf27]">
             <CheckCircle2 size={34} />
           </div>
           <h1 className="mt-6 text-4xl font-black">Payment successful</h1>
@@ -88,7 +88,7 @@ export default async function PaymentSuccessPage({
           </p>
           <Link
             href={`/teams/${id}`}
-            className="mt-7 inline-block rounded-xl bg-green-500 px-5 py-3 font-semibold text-black"
+            className="mt-7 inline-block rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black"
           >
             Go to team
           </Link>
@@ -131,7 +131,7 @@ function State({ title, message }: { title: string; message: string }) {
       <p className="mt-3 text-zinc-400">{message}</p>
       <Link
         href="/dashboard"
-        className="mt-6 inline-block rounded-xl bg-green-500 px-5 py-3 font-semibold text-black"
+        className="mt-6 inline-block rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black"
       >
         Dashboard
       </Link>

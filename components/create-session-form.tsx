@@ -87,7 +87,7 @@ export function CreateSessionForm() {
           onChange={(event) => setDescription(event.target.value)}
           rows={4}
           placeholder="Optional session details..."
-          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
         />
       </label>
 
@@ -95,7 +95,7 @@ export function CreateSessionForm() {
 
       <button
         disabled={loading}
-        className="w-full rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+        className="w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
       >
         {loading ? "Creating..." : "Create football session"}
       </button>
@@ -125,7 +125,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(event) => setValue(event.target.value)}
-        className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
       />
     </label>
   );
@@ -148,7 +148,7 @@ function Select({
       <select
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
       >
         {options.map((option) => (
           <option key={option}>{option}</option>

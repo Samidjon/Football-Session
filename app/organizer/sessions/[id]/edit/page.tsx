@@ -45,7 +45,7 @@ export default async function EditOrganizerSessionPage({
       </Link>
 
       <div className="mt-6">
-        <p className="font-semibold text-green-400">ORGANIZER</p>
+        <p className="font-semibold text-[#ffcf27]">ORGANIZER</p>
         <h1 className="mt-2 text-4xl font-black">Edit session</h1>
         <p className="mt-2 text-zinc-400">
           Update the match details, team limit, deposit or session status.

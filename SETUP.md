@@ -1,99 +1,24 @@
-# Quick setup
+# MOTM — quick setup
 
-## 1. Install and run
+1. Install Node.js LTS.
+2. Run `npm install`.
+3. Create a Supabase project and configure `.env.local` using `.env.example`.
+4. For a fresh database, run `supabase/schema.sql` in Supabase SQL Editor. For an existing database, apply only the relevant scripts in `supabase/migrations/`.
+5. Add Stripe test keys to `.env.local` while developing.
+6. Run `npm run dev` and open `http://localhost:3000`.
 
-```bash
-npm install
-npm run dev
-```
+## Make an account an Organizer
 
-## 2. Supabase
-
-Create a Supabase project.
-
-Then run:
-
-`supabase/schema.sql`
-
-## 3. Environment
-
-Copy `.env.example` to `.env.local`.
-
-Example:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxx
-```
-
-Restart the dev server after changing env variables.
-
-## 4. First captain
-
-Open:
-
-`http://localhost:3000/auth/register`
-
-Create an account.
-
-## 5. Make yourself an organizer
-
-Copy your user UUID from Supabase Authentication -> Users.
-
-Then run:
+Register normally, copy the account's UUID from **Supabase → Authentication → Users**, and run:
 
 ```sql
 update public.profiles
 set role = 'organizer'
-where id = 'YOUR_UUID';
+where id = 'YOUR_USER_UUID';
 ```
 
-Now open:
+## Vercel deployment
 
-`http://localhost:3000/organizer`
+Add the required environment variables in **Project Settings → Environment Variables**, select Production, then redeploy. Set the Vercel domain in **Supabase → Authentication → URL Configuration**.
 
-## 6. First test flow
-
-1. Register captain account.
-2. Create a separate organizer account or promote your account.
-3. Create a session.
-4. Open the session as a captain.
-5. Register a team.
-6. Open the team.
-7. Add player names.
-
-Payment verification and fixture automation are the next layer and are already represented in the database.
-
-
-## Stripe setup
-
-1. Create a Stripe account and use **Test mode** first.
-2. Copy the test publishable key and test secret key into `.env.local`.
-3. Install the new dependencies:
-
-```bash
-npm install
-```
-
-4. Start the app:
-
-```bash
-npm run dev
-```
-
-After registering a team, the app opens:
-
-`/teams/<team-id>/payment`
-
-The checkout form uses Stripe.js Elements with a Stripe PaymentIntent. Do not build plain HTML card-number/CVC inputs and do not store card details in Supabase.
-
-For a production release, add a Stripe webhook to mark the payment as paid and the team as confirmed after Stripe sends the successful payment event. The current return page verifies the PaymentIntent server-side as an MVP flow.
-
-## Existing Supabase projects
-
-After updating an existing project, run `supabase/migrations/20261008_team_delete.sql` in the Supabase SQL Editor to add the captain team-delete function.
-
-
-## Public roster migration
-
-If your Supabase database already exists, run `supabase/migrations/20261008_public_team_rosters.sql`. Visitors can then open team squad pages without signing in.
+Before taking real payments, switch Stripe to Live only after testing payment flows and confirming the webhook, refunds/cancellations, and payout bank details are ready.

@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12">
       <div className="w-full">
-        <p className="mb-2 font-semibold text-green-400">FOOTBALL SESSION</p>
+        <p className="mb-2 font-semibold text-[#ffcf27]">MOTM FOOTBALL</p>
         <h1 className="text-4xl font-black">Welcome back</h1>
         <p className="mt-2 text-zinc-400">Sign in to manage your teams.</p>
 
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+            className="w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
@@ -58,7 +58,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-zinc-400">
           New here?{" "}
-          <Link href="/auth/register" className="text-green-400 hover:text-green-300">
+          <Link href="/auth/register" className="text-[#ffcf27] hover:text-[#ffe477]">
             Create captain account
           </Link>
         </p>
@@ -89,7 +89,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 outline-none transition focus:border-green-500"
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 outline-none transition focus:border-[#1559ad]"
       />
     </label>
   );

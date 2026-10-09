@@ -114,12 +114,12 @@ export function EditTeamForm({
           <input
             value={teamName}
             onChange={(event) => setTeamName(event.target.value)}
-            className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+            className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
           />
           <button
             onClick={saveTeam}
             disabled={loading}
-            className="rounded-xl bg-green-500 px-5 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+            className="rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save team"}
           </button>
@@ -158,14 +158,14 @@ export function EditTeamForm({
                       [player.id]: event.target.value
                     }))
                   }
-                  className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+                  className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
                 />
 
                 <div className="flex gap-2">
                   <button
                     onClick={() => savePlayer(player.id)}
                     disabled={savingPlayer === player.id}
-                    className="rounded-xl border border-green-500/30 px-4 py-3 text-sm font-semibold text-green-400 hover:bg-green-500/10 disabled:opacity-50"
+                    className="rounded-xl border border-[#ffcf27]/30 px-4 py-3 text-sm font-semibold text-[#ffcf27] hover:bg-[#ffcf27]/10 disabled:opacity-50"
                   >
                     {savingPlayer === player.id ? "..." : "Save"}
                   </button>

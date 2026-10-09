@@ -38,7 +38,7 @@ export default async function TeamPaymentPage({
   if (team.registration_status === "confirmed") {
     return (
       <main className="mx-auto max-w-xl px-6 py-20 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500/10 text-green-400">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ffcf27]/10 text-[#ffcf27]">
           <ShieldCheck />
         </div>
         <h1 className="mt-5 text-3xl font-black">Payment already confirmed</h1>
@@ -47,7 +47,7 @@ export default async function TeamPaymentPage({
         </p>
         <Link
           href={`/teams/${id}`}
-          className="mt-6 inline-block rounded-xl bg-green-500 px-5 py-3 font-semibold text-black"
+          className="mt-6 inline-block rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black"
         >
           Back to team
         </Link>
@@ -70,7 +70,7 @@ export default async function TeamPaymentPage({
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
         <section>
-          <p className="font-semibold text-green-400">SECURE CHECKOUT</p>
+          <p className="font-semibold text-[#ffcf27]">SECURE CHECKOUT</p>
           <h1 className="mt-2 text-4xl font-black">Pay team deposit</h1>
           <p className="mt-3 leading-7 text-zinc-400">
             Complete the deposit to secure your team slot. The team remains

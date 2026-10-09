@@ -55,11 +55,11 @@ export function AddPlayerForm({
           value={name}
           onChange={(event) => setName(event.target.value)}
           placeholder="Player name"
-          className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-green-500"
+          className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]"
         />
         <button
           disabled={loading}
-          className="rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+          className="rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
         >
           {loading ? "..." : "Add"}
         </button>

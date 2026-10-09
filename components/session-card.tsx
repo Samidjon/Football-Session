@@ -10,10 +10,10 @@ export function SessionCard({
   teamCount: number;
 }) {
   return (
-    <article className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-green-500/40 hover:bg-zinc-900">
+    <article className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-[#ffcf27]/50 hover:bg-zinc-900">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <span className="inline-flex rounded-full bg-green-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-green-400">
+          <span className="inline-flex rounded-full bg-[#ffcf27]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#ffcf27]">
             {session.format}
           </span>
           <h2 className="mt-4 text-2xl font-bold">{session.title}</h2>
@@ -46,7 +46,7 @@ export function SessionCard({
 function Info({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-green-400">{icon}</span>
+      <span className="text-[#ffcf27]">{icon}</span>
       <span>{text}</span>
     </div>
   );

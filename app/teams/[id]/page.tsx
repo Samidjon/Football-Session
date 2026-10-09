@@ -22,7 +22,7 @@ export default async function TeamPage({
         <h1 className="text-3xl font-black">Sign in required</h1>
         <Link
           href="/auth/login"
-          className="mt-5 inline-block rounded-xl bg-green-500 px-5 py-3 font-semibold text-black"
+          className="mt-5 inline-block rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black"
         >
           Sign in
         </Link>
@@ -74,7 +74,7 @@ export default async function TeamPage({
       <div className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-green-400">{session.title}</p>
+            <p className="text-[#ffcf27]">{session.title}</p>
             <h1 className="mt-2 text-4xl font-black">{team.team_name}</h1>
             <p className="mt-2 text-zinc-400">
               {players?.length ?? 0} / {session.players_per_team} players
@@ -92,7 +92,7 @@ export default async function TeamPage({
             <span
               className={`rounded-full px-3 py-1 text-sm font-semibold ${
                 team.registration_status === "confirmed"
-                  ? "bg-green-500/10 text-green-400"
+                  ? "bg-[#ffcf27]/10 text-[#ffcf27]"
                   : "bg-yellow-500/10 text-yellow-300"
               }`}
             >
@@ -114,7 +114,7 @@ export default async function TeamPage({
         {team.registration_status === "pending_payment" && (
           <Link
             href={`/teams/${id}/payment`}
-            className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400"
+            className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477]"
           >
             Pay deposit
           </Link>

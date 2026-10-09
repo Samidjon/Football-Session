@@ -39,7 +39,7 @@ export default async function OrganizerPage() {
     <main className="mx-auto max-w-7xl px-6 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="font-semibold text-green-400">ORGANIZER</p>
+          <p className="font-semibold text-[#ffcf27]">ORGANIZER</p>
           <h1 className="mt-2 text-4xl font-black">Your sessions</h1>
           <p className="mt-2 text-zinc-400">
             Create and manage football sessions.
@@ -48,7 +48,7 @@ export default async function OrganizerPage() {
 
         <Link
           href="/organizer/sessions/new"
-          className="rounded-xl bg-green-500 px-5 py-3 font-semibold text-black hover:bg-green-400"
+          className="rounded-xl bg-[#ffcf27] px-5 py-3 font-semibold text-black hover:bg-[#ffe477]"
         >
           Create session
         </Link>
@@ -62,7 +62,7 @@ export default async function OrganizerPage() {
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-green-400">{session.format}</p>
+                <p className="text-sm text-[#ffcf27]">{session.format}</p>
                 <h2 className="mt-1 text-xl font-bold">{session.title}</h2>
                 <p className="mt-2 text-sm text-zinc-400">
                   {session.match_date} • {session.venue}
@@ -77,7 +77,7 @@ export default async function OrganizerPage() {
                 </Link>
                 <Link
                   href={`/organizer/sessions/${session.id}/edit`}
-                  className="rounded-xl border border-green-500/30 px-4 py-2 text-sm text-green-400 hover:bg-green-500/10"
+                  className="rounded-xl border border-[#ffcf27]/30 px-4 py-2 text-sm text-[#ffcf27] hover:bg-[#ffcf27]/10"
                 >
                   Edit
                 </Link>

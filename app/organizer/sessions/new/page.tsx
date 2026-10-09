@@ -21,7 +21,7 @@ export default async function NewSessionPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
-      <p className="font-semibold text-green-400">ORGANIZER</p>
+      <p className="font-semibold text-[#ffcf27]">ORGANIZER</p>
       <h1 className="mt-2 text-4xl font-black">Create session</h1>
       <p className="mt-2 text-zinc-400">
         Publish the match details and open the team slots.

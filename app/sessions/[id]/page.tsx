@@ -47,7 +47,7 @@ export default async function SessionDetailsPage({
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
         <section>
-          <span className="inline-flex rounded-full bg-green-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-green-400">
+          <span className="inline-flex rounded-full bg-[#ffcf27]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#ffcf27]">
             {session.format}
           </span>
 
@@ -129,7 +129,7 @@ export default async function SessionDetailsPage({
                   </p>
                   <Link
                     href="/auth/login"
-                    className="mt-4 block w-full rounded-xl bg-green-500 px-4 py-3 text-center font-semibold text-black hover:bg-green-400"
+                    className="mt-4 block w-full rounded-xl bg-[#ffcf27] px-4 py-3 text-center font-semibold text-black hover:bg-[#ffe477]"
                   >
                     Sign in
                   </Link>
@@ -146,7 +146,7 @@ export default async function SessionDetailsPage({
 function Info({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="flex items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 text-sm text-zinc-300">
-      <span className="text-green-400">{icon}</span>
+      <span className="text-[#ffcf27]">{icon}</span>
       <span>{text}</span>
     </div>
   );

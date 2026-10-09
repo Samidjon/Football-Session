@@ -1,5 +1,5 @@
 -- =========================================================
--- FOOTBALL SESSION DATABASE
+-- MOTM FOOTBALL DATABASE
 -- Run this whole file in Supabase SQL Editor.
 -- =========================================================
 
@@ -328,6 +328,11 @@ create policy "sessions_select_authenticated"
 on public.sessions for select
 to authenticated
 using (true);
+
+create policy "sessions_select_anon"
+on public.sessions for select
+to anon
+using (status = 'open');
 
 create policy "sessions_insert_organizer"
 on public.sessions for insert

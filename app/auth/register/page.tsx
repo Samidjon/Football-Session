@@ -55,7 +55,7 @@ export default function RegisterPage() {
   return (
     <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12">
       <div className="w-full">
-        <p className="mb-2 font-semibold text-green-400">FOOTBALL SESSION</p>
+        <p className="mb-2 font-semibold text-[#ffcf27]">MOTM FOOTBALL</p>
         <h1 className="text-4xl font-black">Create your account</h1>
         <p className="mt-2 text-zinc-400">Every new account starts as Captain.</p>
 
@@ -72,14 +72,14 @@ export default function RegisterPage() {
           )}
 
           {message && (
-            <div className="rounded-xl border border-green-900 bg-green-950/40 p-4 text-sm text-green-300">
+            <div className="rounded-xl border border-[#ffcf27]/30 bg-[#ffcf27]/10 p-4 text-sm text-[#ffe477]">
               {message}
             </div>
           )}
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-green-500 px-4 py-3 font-semibold text-black hover:bg-green-400 disabled:opacity-50"
+            className="w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
           >
             {loading ? "Creating..." : "Create captain account"}
           </button>
@@ -87,7 +87,7 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-zinc-400">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-green-400 hover:text-green-300">
+          <Link href="/auth/login" className="text-[#ffcf27] hover:text-[#ffe477]">
             Sign in
           </Link>
         </p>
@@ -121,7 +121,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 outline-none transition focus:border-green-500"
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 outline-none transition focus:border-[#1559ad]"
       />
     </label>
   );

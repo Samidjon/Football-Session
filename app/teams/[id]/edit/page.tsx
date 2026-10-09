@@ -58,7 +58,7 @@ export default async function EditTeamPage({
       </Link>
 
       <div className="mt-8">
-        <p className="font-semibold text-green-400">TEAM MANAGEMENT</p>
+        <p className="font-semibold text-[#ffcf27]">TEAM MANAGEMENT</p>
         <h1 className="mt-2 text-4xl font-black">Edit {team.team_name}</h1>
         <p className="mt-2 text-zinc-400">
           Update your team details and player list.
