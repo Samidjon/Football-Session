@@ -8,7 +8,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const supabase = await createClient();
   const [{ data: team }, { data: { user } }] = await Promise.all([
-    supabase.from("teams").select("id, team_name, created_by, registration_status, session_id, player_limit, sessions(title, match_date, start_time, end_time, venue, players_per_team, deposit_amount, status, max_teams)").eq("id", id).maybeSingle(),
+    supabase.from("teams").select("id, team_name, created_by, registration_status, session_id, sessions(id, title, match_date, start_time, end_time, venue, players_per_team, deposit_amount, status, max_teams)").eq("id", id).maybeSingle(),
     supabase.auth.getUser()
   ]);
   if (!team) notFound();
