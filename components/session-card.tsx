@@ -10,7 +10,7 @@ export function SessionCard({
   teamCount: number;
 }) {
   return (
-    <article className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-[#ffcf27]/50 hover:bg-zinc-900">
+    <article className="interactive-card rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 motion-rise">
       <div className="flex items-start justify-between gap-4">
         <div>
           <span className="inline-flex rounded-full bg-[#ffcf27]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#ffcf27]">
@@ -22,7 +22,7 @@ export function SessionCard({
         <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-300">
           {session.deposit_amount === 0
             ? "Free"
-            : `RM ${session.deposit_amount.toFixed(0)} deposit`}
+            : `RM ${session.deposit_amount.toFixed(0)} / person`}
         </span>
       </div>
 
@@ -30,12 +30,12 @@ export function SessionCard({
         <Info icon={<CalendarDays size={16} />} text={formatDate(session.match_date)} />
         <Info icon={<Clock3 size={16} />} text={`${session.start_time.slice(0, 5)} – ${session.end_time.slice(0, 5)}`} />
         <Info icon={<MapPin size={16} />} text={session.venue} />
-        <Info icon={<Users size={16} />} text={`${teamCount} / ${session.max_teams} teams registered`} />
+        <Info icon={<Users size={16} />} text={`${teamCount} / ${session.max_teams} teams created`} />
       </div>
 
       <Link
         href={`/sessions/${session.id}`}
-        className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-3 font-semibold text-black hover:bg-zinc-200"
+        className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-[#ffcf27] px-4 py-3 font-black text-[#101522] transition hover:-translate-y-0.5 hover:bg-[#ffe477]"
       >
         View session
       </Link>

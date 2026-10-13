@@ -13,17 +13,17 @@ export default function HomePage() {
               The home of MOTM football
             </div>
 
-            <h1 className="text-5xl font-black leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="motion-rise text-5xl font-black leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
               Your team.
               <span className="block text-[#ffcf27]">Your game.</span>
               Your moment.
             </h1>
 
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-400">
+            <p className="motion-rise motion-delay-1 mt-7 max-w-2xl text-lg leading-8 text-zinc-400">
               Discover upcoming football sessions, register your team, manage your squad, and secure your place on the pitch.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="motion-rise motion-delay-2 mt-9 flex flex-wrap gap-3">
               <Link
                 href="/sessions"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522] transition hover:bg-[#ffe477]"
@@ -34,7 +34,7 @@ export default function HomePage() {
                 href="/auth/register"
                 className="rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-white transition hover:border-[#ffcf27]/60 hover:bg-zinc-900"
               >
-                Become a captain
+                Join MOTM
               </Link>
               <Link
                 href="/individuals"
@@ -57,6 +57,7 @@ export default function HomePage() {
           <div className="relative mx-auto w-full max-w-md">
             <div className="absolute -inset-5 rounded-[2.5rem] bg-blue-600/20 blur-3xl" />
             <div className="relative overflow-hidden rounded-[2rem] border border-[#ffcf27]/25 bg-gradient-to-br from-[#1559ad] via-[#104b97] to-[#071b38] p-7 shadow-[0_25px_100px_rgba(10,77,164,0.22)] sm:p-10">
+              <Image src="/football-ball.png" alt="Football" width={96} height={96} className="motm-ball-float absolute -right-2 top-4 z-10 h-16 w-16 opacity-90 drop-shadow-[0_8px_24px_rgba(35,84,255,0.35)] sm:right-2 sm:top-5 sm:h-20 sm:w-20" />
               <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[24px] border-[#ffcf27]/15" />
               <div className="relative mx-auto aspect-square w-full max-w-[270px] overflow-hidden rounded-3xl bg-white p-2 shadow-2xl shadow-black/30">
                 <Image
@@ -85,7 +86,7 @@ export default function HomePage() {
           <Feature
             icon={<Users size={22} />}
             title="Bring your squad"
-            description="Captains register a team and manage player names in one place."
+            description="Any user can create a team. Every participant pays individually to secure a place."
           />
           <Feature
             icon={<ShieldCheck size={22} />}

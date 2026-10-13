@@ -36,7 +36,7 @@ export default async function OrganizerPage() {
     .order("match_date", { ascending: true });
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
+    <main className="mx-auto max-w-7xl px-6 py-10 motion-rise">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-semibold text-[#ffcf27]">ORGANIZER</p>
@@ -66,7 +66,7 @@ export default async function OrganizerPage() {
         {(sessions ?? []).map((session) => (
           <div
             key={session.id}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6"
+            className="interactive-card motion-rise rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6"
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>

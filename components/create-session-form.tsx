@@ -78,7 +78,7 @@ export function CreateSessionForm() {
         <Field label="Number of teams" value={maxTeams} setValue={setMaxTeams} type="number" />
       </div>
 
-      <Field label="Deposit (RM)" value={deposit} setValue={setDeposit} type="number" />
+      <Field label="Fee per player (RM)" value={deposit} setValue={setDeposit} type="number" />
 
       <label className="block">
         <span className="mb-2 block text-sm text-zinc-300">Description</span>
@@ -122,6 +122,8 @@ function Field({
       <input
         required
         type={type}
+        min={type === "number" ? 1 : undefined}
+        step={type === "number" ? 1 : undefined}
         value={value}
         placeholder={placeholder}
         onChange={(event) => setValue(event.target.value)}

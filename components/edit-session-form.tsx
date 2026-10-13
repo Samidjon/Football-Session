@@ -83,7 +83,7 @@ export function EditSessionForm({ session }: { session: Session }) {
       <div className="grid gap-5 md:grid-cols-3">
         <Field label="Players / team" value={playersPerTeam} setValue={setPlayersPerTeam} type="number" />
         <Field label="Number of teams" value={maxTeams} setValue={setMaxTeams} type="number" />
-        <Field label="Deposit (RM)" value={deposit} setValue={setDeposit} type="number" />
+        <Field label="Fee per player (RM)" value={deposit} setValue={setDeposit} type="number" />
       </div>
 
       <label className="block">

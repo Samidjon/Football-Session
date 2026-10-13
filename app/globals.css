@@ -73,3 +73,125 @@ html[data-theme="light"] textarea {
 html[data-theme="light"] input::placeholder,
 html[data-theme="light"] textarea::placeholder { color: #94a3b8; }
 html[data-theme="light"] .hover\:bg-zinc-800:hover { background-color: #e2e8f0 !important; }
+
+
+/* MOTM interaction polish: lightweight CSS-only animation, no extra dependency required. */
+@keyframes motm-rise-in {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes motm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes motm-ball-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-5deg); }
+  50% { transform: translate3d(0, -13px, 0) rotate(5deg); }
+}
+@keyframes motm-pop-in {
+  0% { opacity: 0; transform: scale(.78); }
+  75% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.motion-rise { animation: motm-rise-in .62s cubic-bezier(.2,.75,.2,1) both; }
+.motion-fade { animation: motm-fade-in .7s ease both; }
+.motion-delay-1 { animation-delay: .12s; }
+.motion-delay-2 { animation-delay: .22s; }
+.animate-pop-in { animation: motm-pop-in .5s cubic-bezier(.2,.8,.2,1) both; }
+.motm-ball-float { animation: motm-ball-float 4.5s ease-in-out infinite; }
+.interactive-card {
+  transition: transform .22s ease, border-color .22s ease, background-color .22s ease, box-shadow .22s ease;
+}
+.interactive-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 207, 39, .4);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .16);
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--motm-yellow);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+/* Additional tactile interactions: CSS-only, no animation package required. */
+@keyframes motm-glow-breathe {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 207, 39, 0); }
+  50% { box-shadow: 0 0 34px rgba(255, 207, 39, .08); }
+}
+.motm-glow-breathe { animation: motm-glow-breathe 4s ease-in-out infinite; }
+.interactive-card:active { transform: translateY(-1px) scale(.995); }
+button, a, input, select, textarea { transition-timing-function: cubic-bezier(.2,.75,.2,1); }
+
+
+/* MOTM mascot jogs across the viewport and turns around at each edge. */
+.motm-mascot-track {
+  position: fixed;
+  z-index: 24;
+  inset: auto 0 6px;
+  height: 102px;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.motm-running-mascot {
+  position: absolute;
+  bottom: 0;
+  left: -130px;
+  width: clamp(70px, 8.8vw, 112px);
+  will-change: left, transform;
+  animation: motm-mascot-run 20s linear infinite;
+  filter: drop-shadow(0 6px 9px rgba(21, 89, 173, .18));
+}
+.motm-running-mascot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: motm-mascot-bob .38s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+.motm-mascot-dust {
+  display: block;
+  position: absolute;
+  z-index: -1;
+  left: 16%;
+  bottom: 1px;
+  width: 64%;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(21, 89, 173, .16);
+  filter: blur(4px);
+}
+@keyframes motm-mascot-run {
+  0% { left: -130px; transform: scaleX(1); }
+  44% { left: calc(100vw - clamp(70px, 8.8vw, 112px)); transform: scaleX(1); }
+  48% { left: calc(100vw - clamp(70px, 8.8vw, 112px)); transform: scaleX(1); }
+  51% { left: calc(100vw - clamp(70px, 8.8vw, 112px)); transform: scaleX(-1); }
+  95% { left: -130px; transform: scaleX(-1); }
+  98% { left: -130px; transform: scaleX(-1); }
+  100% { left: -130px; transform: scaleX(1); }
+}
+@keyframes motm-mascot-bob {
+  from { transform: translateY(0) rotate(-2deg); }
+  to { transform: translateY(-6px) rotate(2deg); }
+}
+@keyframes motm-mascot-dust {
+  0%, 100% { opacity: .22; transform: scaleX(.72); }
+  50% { opacity: .48; transform: scaleX(1); }
+}
+.motm-mascot-dust { animation: motm-mascot-dust .42s ease-in-out infinite alternate; }
+@media (max-width: 640px) {
+  .motm-mascot-track { height: 74px; bottom: 2px; }
+  .motm-running-mascot { width: 70px; }
+  @keyframes motm-mascot-run {
+    0% { left: -80px; transform: scaleX(1); }
+    44% { left: calc(100vw - 70px); transform: scaleX(1); }
+    48% { left: calc(100vw - 70px); transform: scaleX(1); }
+    51% { left: calc(100vw - 70px); transform: scaleX(-1); }
+    95% { left: -80px; transform: scaleX(-1); }
+    98% { left: -80px; transform: scaleX(-1); }
+    100% { left: -80px; transform: scaleX(1); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motm-mascot-track { display: none; }
+}

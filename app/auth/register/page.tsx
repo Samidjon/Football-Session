@@ -53,11 +53,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12">
+    <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12 motion-rise">
       <div className="w-full">
         <p className="mb-2 font-semibold text-[#ffcf27]">MOTM FOOTBALL</p>
         <h1 className="text-4xl font-black">Create your account</h1>
-        <p className="mt-2 text-zinc-400">Every new account starts as Captain.</p>
+        <p className="mt-2 text-zinc-400">Every account starts as a user.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <Field label="Full name" value={fullName} onChange={setFullName} placeholder="Ahmad Rahman" />
@@ -81,7 +81,7 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full rounded-xl bg-[#ffcf27] px-4 py-3 font-semibold text-black hover:bg-[#ffe477] disabled:opacity-50"
           >
-            {loading ? "Creating..." : "Create captain account"}
+            {loading ? "Creating..." : "Create account"}
           </button>
         </form>
 

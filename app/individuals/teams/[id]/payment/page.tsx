@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { StripePayment } from "@/components/stripe-payment";
 
@@ -8,10 +8,22 @@ export default async function IndividualTeamPaymentPage({ params }: { params: Pr
   const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-  const { data: team } = await supabase.from("individual_teams").select("id, team_name, captain_id, status, deposit_amount").eq("id", id).maybeSingle();
-  if (!team) notFound();
-  if (team.captain_id !== user.id) return <main className="mx-auto max-w-xl px-6 py-20 text-center"><h1 className="text-3xl font-black">Access denied</h1><p className="mt-3 text-zinc-400">Only the captain can pay this deposit.</p></main>;
-  if (team.status === "counted") return <main className="mx-auto max-w-xl px-6 py-20 text-center"><h1 className="text-3xl font-black">Deposit already paid</h1><p className="mt-3 text-zinc-400">This squad is counted as active.</p><Link href={`/individuals/teams/${id}`} className="mt-6 inline-block rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522]">Back to squad</Link></main>;
-  return <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14"><Link href={`/individuals/teams/${id}/manage`} className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"><ArrowLeft size={16} /> Back to team</Link><div className="mt-8 grid gap-8 lg:grid-cols-[0.8fr_1.2fr]"><section><p className="font-bold text-[#ffcf27]">MOTM INDIVIDUALS</p><h1 className="mt-2 text-4xl font-black">Pay team deposit</h1><p className="mt-3 leading-7 text-zinc-400">You can pay when ready. After Stripe confirms the payment, this team’s status changes from Not counted to Counted.</p><div className="mt-7 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6"><p className="text-sm text-zinc-500">Team</p><h2 className="mt-1 text-2xl font-black">{team.team_name}</h2><div className="mt-6 flex items-center justify-between border-t border-zinc-800 pt-4"><span className="text-zinc-400">Deposit</span><strong className="text-3xl">RM {Number(team.deposit_amount).toFixed(2)}</strong></div><p className="mt-4 text-sm text-amber-300">Current status: Not counted</p></div></section><section className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 md:p-8"><StripePayment teamId={id} mode="individual" /></section></div></main>;
+  if (!user) redirect(`/auth/login?next=/individuals/teams/${id}/payment`);
+
+  const { data: team } = await supabase.from("individual_teams").select("id, team_name, status, deposit_amount, player_limit").eq("id", id).maybeSingle();
+  if (!team || team.status === "cancelled") notFound();
+
+  const [{ data: ownMembership }, { count: paidCount }] = await Promise.all([
+    supabase.from("individual_team_memberships").select("id, status").eq("individual_team_id", id).eq("user_id", user.id).maybeSingle(),
+    supabase.from("individual_team_memberships").select("id", { count: "exact", head: true }).eq("individual_team_id", id).eq("status", "paid")
+  ]);
+
+  if (ownMembership?.status === "paid") return <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise"><div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300"><CheckCircle2 size={28} /></div><h1 className="mt-5 text-3xl font-black">You are already a member</h1><p className="mt-2 text-zinc-400">Your payment is confirmed and your name is on the public roster.</p><Link href={`/individuals/teams/${id}`} className="mt-6 inline-flex rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522]">View team</Link></main>;
+  const capacity = Number(team.player_limit ?? 30);
+  if ((paidCount ?? 0) >= capacity) return <State title="Team full" message="Every place in this team has already been paid for." />;
+
+  return <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 motm-page-enter"><Link href={`/individuals/teams/${id}`} className="inline-flex items-center gap-2 text-sm text-zinc-400 transition hover:text-[#ffcf27]"><ArrowLeft size={16} /> Back to team</Link><div className="mt-8 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]"><section className="motion-rise"><p className="font-bold uppercase tracking-[0.22em] text-[#ffcf27]">MOTM · INDIVIDUALS</p><h1 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">Join and pay</h1><p className="mt-4 leading-7 text-zinc-400">Creating the team is free. Pay the fee for your own place. Your name appears in the public roster only after Stripe confirms the payment.</p><div className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 interactive-card"><p className="text-sm text-zinc-500">Team</p><h2 className="mt-1 text-2xl font-black">{team.team_name}</h2><div className="mt-6 space-y-4 text-sm"><Row label="Fee for your place" value={`RM ${Number(team.deposit_amount).toFixed(2)}`} /><Row label="Paid members" value={`${paidCount ?? 0} / ${capacity}`} /><Row label="Your status" value="Not joined yet" /></div></div></section><section className="motion-rise motion-delay-1 rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 md:p-8"><StripePayment teamId={id} mode="individual" /></section></div></main>;
 }
+
+function Row({ label, value }: { label: string; value: string }) { return <div className="flex items-center justify-between gap-4 border-b border-zinc-800 pb-3 last:border-0 last:pb-0"><span className="text-zinc-500">{label}</span><span className="text-right font-semibold">{value}</span></div>; }
+function State({ title, message }: { title: string; message: string }) { return <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise"><h1 className="text-3xl font-black">{title}</h1><p className="mt-3 text-zinc-400">{message}</p><Link href="/individuals" className="mt-6 inline-flex rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522]">Back to Individuals</Link></main>; }

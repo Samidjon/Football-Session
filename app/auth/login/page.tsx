@@ -32,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12">
+    <main className="mx-auto flex min-h-[calc(100vh-73px)] max-w-md items-center px-6 py-12 motion-rise">
       <div className="w-full">
         <p className="mb-2 font-semibold text-[#ffcf27]">MOTM FOOTBALL</p>
         <h1 className="text-4xl font-black">Welcome back</h1>
@@ -59,7 +59,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-sm text-zinc-400">
           New here?{" "}
           <Link href="/auth/register" className="text-[#ffcf27] hover:text-[#ffe477]">
-            Create captain account
+            Create account
           </Link>
         </p>
       </div>

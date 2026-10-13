@@ -8,7 +8,7 @@ export default async function SessionsPage() {
   const { data } = await supabase
     .from("sessions")
     .select("*")
-    .eq("status", "open")
+    .in("status", ["open", "full"])
     .order("match_date", { ascending: true });
 
   const sessions = (data ?? []) as Session[];
@@ -28,12 +28,12 @@ export default async function SessionsPage() {
   const counts = new Map(sessionCounts);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12">
+    <main className="mx-auto max-w-7xl px-5 py-12 sm:px-6 motion-rise">
       <div>
         <p className="font-semibold text-[#ffcf27]">MOTM SESSIONS</p>
         <h1 className="mt-2 text-4xl font-black">Find a game</h1>
         <p className="mt-3 max-w-2xl text-zinc-400">
-          Browse open sessions and register your team as captain.
+          Browse open sessions, create a team, and pay individually for your own place.
         </p>
       </div>
 

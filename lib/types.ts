@@ -1,4 +1,4 @@
-export type Role = "organizer" | "captain";
+export type Role = "organizer" | "user";
 
 export type SessionStatus =
   | "open"
@@ -39,9 +39,10 @@ export type Session = {
 export type Team = {
   id: string;
   session_id: string;
-  captain_id: string;
+  created_by: string;
   team_name: string;
   team_logo_url: string | null;
+  player_limit: number;
   registration_status: RegistrationStatus;
   created_at: string;
 };

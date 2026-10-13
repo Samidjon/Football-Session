@@ -1,95 +1,46 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
-type Player = { id: string; player_name: string };
+type Status = "not_counted" | "counted" | "cancelled";
 
 export function IndividualTeamManager({
-  teamId,
-  initialTeamName,
-  initialPlayers,
-  depositAmount,
-  status
+  teamId, initialTeamName, initialPlayerLimit, depositAmount, status, paidMembers
 }: {
   teamId: string;
   initialTeamName: string;
-  initialPlayers: Player[];
+  initialPlayerLimit: number;
   depositAmount: number;
-  status: "not_counted" | "counted" | "cancelled";
+  status: Status;
+  paidMembers: number;
 }) {
   const router = useRouter();
   const supabase = createClient();
   const [teamName, setTeamName] = useState(initialTeamName);
-  const [players, setPlayers] = useState(initialPlayers);
-  const [newPlayerName, setNewPlayerName] = useState("");
+  const [playerLimit, setPlayerLimit] = useState(String(initialPlayerLimit));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
-  async function renameTeam() {
-    setBusy(true);
-    setError("");
-    const { error } = await supabase.rpc("rename_individual_team", {
+  async function saveDetails() {
+    setBusy(true); setError(""); setMessage("");
+    const { error } = await supabase.rpc("update_individual_team_details", {
       p_team_id: teamId,
-      p_team_name: teamName.trim()
+      p_team_name: teamName.trim(),
+      p_player_limit: Number(playerLimit)
     });
     setBusy(false);
     if (error) return setError(error.message);
-    router.refresh();
-  }
-
-  async function addPlayer(event: FormEvent) {
-    event.preventDefault();
-    const name = newPlayerName.trim();
-    if (!name) return;
-    setBusy(true);
-    setError("");
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) {
-      setBusy(false);
-      return setError("Please sign in again.");
-    }
-    const { data: team } = await supabase.from("individual_teams").select("captain_id").eq("id", teamId).single();
-    if (team?.captain_id !== userData.user.id) {
-      setBusy(false);
-      return setError("Only the captain can manage this squad.");
-    }
-    const { data, error } = await supabase.from("individual_players").insert({ individual_team_id: teamId, player_name: name }).select("id, player_name").single();
-    setBusy(false);
-    if (error) return setError(error.message);
-    setPlayers((current) => [...current, data]);
-    setNewPlayerName("");
-    router.refresh();
-  }
-
-  async function renamePlayer(player: Player, newName: string) {
-    const name = newName.trim();
-    if (!name) return setError("Player name cannot be empty.");
-    setBusy(true);
-    setError("");
-    const { error } = await supabase.from("individual_players").update({ player_name: name }).eq("id", player.id);
-    setBusy(false);
-    if (error) return setError(error.message);
-    setPlayers((current) => current.map((p) => p.id === player.id ? { ...p, player_name: name } : p));
-    router.refresh();
-  }
-
-  async function removePlayer(player: Player) {
-    if (!window.confirm(`Remove ${player.player_name} from the squad?`)) return;
-    setBusy(true);
-    setError("");
-    const { error } = await supabase.from("individual_players").delete().eq("id", player.id);
-    setBusy(false);
-    if (error) return setError(error.message);
-    setPlayers((current) => current.filter((p) => p.id !== player.id));
+    setMessage("Team details saved.");
     router.refresh();
   }
 
   async function deleteTeam() {
-    if (!window.confirm("Delete this unpaid individual team? This cannot be undone.")) return;
-    setBusy(true);
-    setError("");
+    if (!window.confirm("Delete this team? This is only allowed if no participant has paid.")) return;
+    setBusy(true); setError("");
     const { error } = await supabase.rpc("delete_individual_team", { p_team_id: teamId });
     setBusy(false);
     if (error) return setError(error.message);
@@ -97,56 +48,21 @@ export function IndividualTeamManager({
     router.refresh();
   }
 
-  const canManage = status !== "cancelled";
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <section className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6">
-        <h2 className="text-xl font-bold">Team details</h2>
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-          <input maxLength={70} value={teamName} onChange={(event) => setTeamName(event.target.value)} className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]" />
-          <button type="button" disabled={busy || !canManage} onClick={renameTeam} className="rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522] disabled:opacity-50">Save team name</button>
-        </div>
-        <p className="mt-3 text-sm text-zinc-500">Deposit: RM {depositAmount.toFixed(2)} · Status: {status === "counted" ? "Counted" : status === "not_counted" ? "Not counted" : "Cancelled"}</p>
-        {status === "not_counted" && <a href={`/individuals/teams/${teamId}/payment`} className="mt-4 inline-flex rounded-xl bg-[#1559ad] px-5 py-3 font-semibold text-white hover:bg-[#1b67c4]">Pay deposit</a>}
+        <h2 className="text-xl font-black">Team details</h2>
+        <p className="mt-2 text-sm leading-6 text-zinc-400">Creating a team is free. Participants add themselves by signing in and paying individually; you cannot add unpaid names manually.</p>
+        <label className="mt-5 block"><span className="mb-2 block text-sm text-zinc-300">Team name</span><input maxLength={70} minLength={2} value={teamName} onChange={(event) => setTeamName(event.target.value)} className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#ffcf27]" /></label>
+        <label className="mt-4 block"><span className="mb-2 block text-sm text-zinc-300">Maximum participants</span><select value={playerLimit} onChange={(event) => setPlayerLimit(event.target.value)} className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#ffcf27]">{Array.from({ length: 30 }, (_, index) => index + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? "participant" : "participants"}</option>)}</select><span className="mt-2 block text-xs text-zinc-500">You cannot set the limit below the number of existing paid/reserved places.</span></label>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3"><Mini label="Paid members" value={`${paidMembers} / ${playerLimit}`} /><Mini label="Fee per person" value={`RM ${depositAmount.toFixed(2)}`} /><Mini label="Status" value={status === "counted" ? "Active" : status === "cancelled" ? "Cancelled" : "Not counted"} /></div>
+        {error && <p className="mt-4 rounded-xl border border-red-900 bg-red-950/40 p-3 text-sm text-red-300">{error}</p>}
+        {message && <p className="mt-4 rounded-xl border border-emerald-900 bg-emerald-950/30 p-3 text-sm text-emerald-300">{message}</p>}
+        <div className="mt-5 flex flex-wrap gap-3"><button type="button" onClick={saveDetails} disabled={busy || status === "cancelled"} className="rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522] disabled:opacity-50">{busy ? "Saving..." : "Save details"}</button><Link href={`/individuals/teams/${teamId}`} className="rounded-xl border border-zinc-700 px-5 py-3 font-semibold hover:bg-zinc-800">View public team</Link></div>
       </section>
-
-      <section>
-        <div className="flex items-end justify-between gap-3">
-          <div><h2 className="text-2xl font-bold">Squad members</h2><p className="mt-1 text-sm text-zinc-500">Add up to 30 players. The roster is public, even before payment.</p></div>
-          <span className="text-sm text-zinc-500">{players.length}/30</span>
-        </div>
-        <div className="mt-5 space-y-3">
-          {players.map((player, index) => <IndividualPlayerRow key={player.id} index={index + 1} player={player} busy={busy || !canManage} onSave={renamePlayer} onRemove={removePlayer} />)}
-        </div>
-        {players.length < 30 && canManage && (
-          <form onSubmit={addPlayer} className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-5">
-            <label className="block text-sm font-semibold">Add player</label>
-            <div className="mt-3 flex gap-2">
-              <input required maxLength={100} value={newPlayerName} onChange={(event) => setNewPlayerName(event.target.value)} placeholder="Player full name" className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]" />
-              <button disabled={busy} className="rounded-xl bg-[#ffcf27] px-4 py-3 font-bold text-[#101522] disabled:opacity-50">Add</button>
-            </div>
-          </form>
-        )}
-      </section>
-
-      {status === "not_counted" && <section className="rounded-2xl border border-red-900/60 bg-red-950/20 p-5"><h3 className="font-bold text-red-300">Delete unpaid team</h3><p className="mt-1 text-sm text-zinc-400">A team that has already paid cannot be deleted here; contact the organizer for cancellation or refund.</p><button disabled={busy} onClick={deleteTeam} className="mt-4 rounded-xl border border-red-900 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-950/40">Delete team</button></section>}
-
-      {error && <div className="rounded-xl border border-red-900 bg-red-950/40 p-4 text-sm text-red-300">{error}</div>}
+      {status === "not_counted" && paidMembers === 0 && <section className="rounded-2xl border border-red-900/50 bg-red-950/20 p-5"><h3 className="font-bold text-red-300">Delete unpaid team</h3><p className="mt-2 text-sm leading-6 text-zinc-400">You can delete a team only before anyone pays to join it.</p><button type="button" disabled={busy} onClick={deleteTeam} className="mt-4 rounded-xl border border-red-900 px-4 py-2 text-sm font-bold text-red-300 hover:bg-red-950/40 disabled:opacity-50">Delete team</button></section>}
     </div>
   );
 }
 
-function IndividualPlayerRow({ index, player, busy, onSave, onRemove }: { index: number; player: Player; busy: boolean; onSave: (player: Player, name: string) => Promise<void>; onRemove: (player: Player) => Promise<void> }) {
-  const [name, setName] = useState(player.player_name);
-  return (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 sm:flex-row sm:items-center">
-      <span className="w-8 text-sm text-zinc-500">{index}</span>
-      <input value={name} onChange={(event) => setName(event.target.value)} className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 outline-none focus:border-[#1559ad]" />
-      <div className="flex gap-2">
-        <button type="button" disabled={busy} onClick={() => onSave(player, name)} className="rounded-xl border border-[#ffcf27]/30 px-4 py-3 text-sm font-semibold text-[#ffcf27] disabled:opacity-50">Save</button>
-        <button type="button" disabled={busy} onClick={() => onRemove(player)} className="rounded-xl border border-red-900 px-4 py-3 text-sm font-semibold text-red-300 disabled:opacity-50">Remove</button>
-      </div>
-    </div>
-  );
-}
+function Mini({ label, value }: { label: string; value: string }) { return <div className="rounded-xl border border-zinc-800 bg-zinc-950/70 p-4"><p className="text-xs text-zinc-500">{label}</p><p className="mt-2 font-black">{value}</p></div>; }

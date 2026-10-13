@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
+import { RunningMascot } from "@/components/running-mascot";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -48,6 +49,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <RunningMascot />
       </body>
     </html>
   );

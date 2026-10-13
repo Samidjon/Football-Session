@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  CardElement,
   Elements,
+  PaymentElement,
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
@@ -34,6 +34,11 @@ export function StripePayment({ teamId, mode = "session" }: { teamId: string; mo
 
         if (!response.ok) {
           throw new Error(data.error || "Could not start payment");
+        }
+
+        if (data.alreadyPaid && data.redirectTo) {
+          window.location.assign(data.redirectTo);
+          return;
         }
 
         if (!data.clientSecret) {
@@ -138,20 +143,7 @@ function PaymentForm() {
       </div>
 
       <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-        <CardElement
-          options={{
-            hidePostalCode: false,
-            style: {
-              base: {
-                color: "#f4f4f5",
-                fontSize: "16px",
-                fontFamily: "Inter, system-ui, sans-serif",
-                "::placeholder": { color: "#71717a" }
-              },
-              invalid: { color: "#f87171" }
-            }
-          }}
-        />
+        <PaymentElement options={{ layout: "tabs" }} />
       </div>
 
       {message && (

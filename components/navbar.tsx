@@ -10,7 +10,7 @@ export async function Navbar() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  let profile: { full_name: string; role: "organizer" | "captain" } | null = null;
+  let profile: { full_name: string; role: "organizer" | "user" } | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
