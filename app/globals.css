@@ -73,6 +73,32 @@ html[data-theme="light"] textarea {
 html[data-theme="light"] input::placeholder,
 html[data-theme="light"] textarea::placeholder { color: #94a3b8; }
 html[data-theme="light"] .hover\:bg-zinc-800:hover { background-color: #e2e8f0 !important; }
+/* Improve contrast on the Individuals page in light mode. */
+html[data-theme="light"] .motm-individuals-hero {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #eff6ff 58%,
+    #fffbeb 100%
+  ) !important;
+  border-color: #d4dfec !important;
+  color: #111827;
+}
+
+html[data-theme="light"]
+  .motm-individuals-hero [class~="border-white/10"] {
+  border-color: #dbe4ef !important;
+}
+
+/* Make status numbers readable on white cards. */
+html[data-theme="light"] [class~="text-emerald-400"] {
+  color: #047857 !important;
+}
+
+html[data-theme="light"] [class~="text-amber-300"],
+html[data-theme="light"] [class~="text-amber-400"] {
+  color: #92400e !important;
+}
 
 
 /* MOTM interaction polish: lightweight CSS-only animation, no extra dependency required. */
@@ -128,7 +154,7 @@ button, a, input, select, textarea { transition-timing-function: cubic-bezier(.2
   position: fixed;
   z-index: 24;
   inset: auto 0 6px;
-  height: 102px;
+  height: 144px;
   overflow: hidden;
   pointer-events: none;
   contain: layout paint;
@@ -180,7 +206,7 @@ button, a, input, select, textarea { transition-timing-function: cubic-bezier(.2
 }
 .motm-mascot-dust { animation: motm-mascot-dust .42s ease-in-out infinite alternate; }
 @media (max-width: 640px) {
-  .motm-mascot-track { height: 74px; bottom: 2px; }
+  .motm-mascot-track { height: 96px; bottom: 2px; }
   .motm-running-mascot { width: 70px; }
   @keyframes motm-mascot-run {
     0% { left: -80px; transform: scaleX(1); }

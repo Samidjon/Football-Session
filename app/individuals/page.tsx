@@ -21,7 +21,7 @@ export default async function IndividualsPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-14 motm-page-enter">
-      <section className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-[#111827] via-zinc-950 to-[#102449] p-7 md:p-10 motm-hero-glow">
+      <section className="motm-individuals-hero relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-[#111827] via-zinc-950 to-[#102449] p-7 md:p-10 motm-hero-glow">
         <div className="pointer-events-none absolute -right-10 -top-14 h-56 w-56 rounded-full border-[26px] border-[#ffcf27]/10" />
         <div className="relative grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
           <div>
