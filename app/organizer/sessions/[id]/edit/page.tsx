@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { EditSessionForm } from "@/components/edit-session-form";
 import type { Session } from "@/lib/types";
+import { SessionPhotos } from "@/components/session-photos";
 
 export default async function EditOrganizerSessionPage({
   params
@@ -55,6 +56,8 @@ export default async function EditOrganizerSessionPage({
       <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6 md:p-8">
         <EditSessionForm session={data as Session} />
       </div>
+
+      <SessionPhotos sessionId={id} editable />
     </main>
   );
 }

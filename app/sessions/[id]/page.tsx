@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { RegisterTeamForm } from "@/components/register-team-form";
 import type { Session, Team } from "@/lib/types";
+import { SessionPhotos } from "@/components/session-photos";
 
 export default async function SessionDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -67,6 +68,7 @@ export default async function SessionDetailsPage({ params }: { params: Promise<{
           </div>
         </aside>
       </div>
+      <div className="mt-8"><SessionPhotos sessionId={id} /></div>
     </main>
   );
 }
