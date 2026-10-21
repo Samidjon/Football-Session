@@ -117,7 +117,7 @@ export function SessionPhotos({ sessionId, editable = false }: { sessionId: stri
       </div>
 
       <div className="mt-5 overflow-hidden rounded-xl border border-[#e5dfcb] bg-[#fffdf2]">
-        <Image src="/upload-loading-soccer-field.webp" alt="MOTM mascot reminding players to tag MOTM on social media"
+        <Image src="/upload-loading-soccer-field.png" alt="MOTM mascot reminding players to tag MOTM on social media"
           width={640} height={427} sizes="(max-width: 768px) 100vw, 1100px"
           className="mx-auto h-auto w-full max-w-5xl object-contain" priority={false} />
       </div>
