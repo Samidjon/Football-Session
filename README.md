@@ -104,7 +104,9 @@ MOTM project. Add a license file before distributing the source under an open-so
 
 ## Individuals
 
-The **Individuals** area lets a user create a public squad with up to 30 players without attaching it to a particular session. Visitors can view the team roster without logging in. The user who created the team can add, rename, and remove players. A new team is public immediately but remains **Not counted** until its deposit is successfully paid through Stripe; after payment it changes to **Counted**. The team creator can pay later from the team page. Organizers can configure the deposit from `/organizer/individuals`.
+The **Individuals** page is a public directory of football sessions. Anyone can browse upcoming sessions and open a session to reserve a place or create a team. Only accounts with the existing **Organizer** role can create, edit, or delete sessions. The directory uses the same session records and permission checks as the main Sessions area.
+
+Each session detail page includes a MOTM social-sharing illustration. Organizers can add direct image URLs and optional captions from the session edit page; regular visitors can view the images but cannot add or remove them.
 
 ## Appearance
 
