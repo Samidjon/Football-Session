@@ -4,6 +4,7 @@ import { CheckCircle2, Clock3 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import Stripe from "stripe";
+import { WhatsAppShareButton } from "@/components/whatsapp-share-button";
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
@@ -18,8 +19,11 @@ export default async function PaymentSuccessPage({ params, searchParams }: {
   if (!user) redirect("/auth/login");
   if (!paymentIntentId || !stripe) return <State title="Payment setup incomplete" message="Stripe could not verify this payment. Check the server environment variables." />;
 
-  const { data: team } = await supabase.from("teams").select("id, team_name, session_id").eq("id", id).maybeSingle();
+  const { data: team } = await supabase.from("teams")
+    .select("id, team_name, session_id, sessions(title, match_date, venue)")
+    .eq("id", id).maybeSingle();
   if (!team) return <State title="Team not found" message="This team could not be found." />;
+  const session = Array.isArray(team.sessions) ? team.sessions[0] : team.sessions;
 
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
@@ -58,13 +62,25 @@ export default async function PaymentSuccessPage({ params, searchParams }: {
 
       await admin.from("teams").update({ registration_status: "confirmed" }).eq("id", id).eq("registration_status", "pending_payment");
 
+      const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://football-session.vercel.app").replace(/\/$/, "");
+      const shareMessage = [
+        `⚽ I just joined ${team.team_name} for ${session?.title ?? "a MOTM football session"}!`,
+        session?.match_date ? `📅 ${formatMatchDate(session.match_date)}` : "",
+        session?.venue ? `📍 ${session.venue}` : "",
+        `See the team and join us: ${siteUrl}/teams/${id}`,
+        "#MOTM"
+      ].filter(Boolean).join("\n");
+
       return (
         <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-400 animate-pop-in"><CheckCircle2 size={34} /></div>
           <p className="mt-6 text-xs font-bold uppercase tracking-[0.25em] text-[#ffcf27]">MOTM · Registration confirmed</p>
           <h1 className="mt-3 text-4xl font-black">You’re in!</h1>
           <p className="mt-3 leading-7 text-zinc-400">Your personal fee has been paid. Your name is now visible in {team.team_name}’s public squad.</p>
-          <Link href={`/teams/${id}`} className="mt-7 inline-flex rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522] transition hover:bg-[#ffe477]">View team</Link>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <WhatsAppShareButton message={shareMessage} />
+            <Link href={`/teams/${id}`} className="inline-flex rounded-xl border border-zinc-700 px-5 py-3 font-bold transition hover:bg-zinc-900">View team</Link>
+          </div>
         </main>
       );
     }
@@ -85,4 +101,10 @@ export default async function PaymentSuccessPage({ params, searchParams }: {
 
 function State({ title, message }: { title: string; message: string }) {
   return <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise"><h1 className="text-3xl font-black">{title}</h1><p className="mt-3 text-zinc-400">{message}</p><Link href="/dashboard" className="mt-6 inline-flex rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522]">Dashboard</Link></main>;
+}
+
+
+function formatMatchDate(value: string) {
+  return new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "short", year: "numeric" })
+    .format(new Date(`${value}T00:00:00`));
 }

@@ -4,6 +4,7 @@ import { CheckCircle2, Clock3 } from "lucide-react";
 import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { WhatsAppShareButton } from "@/components/whatsapp-share-button";
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
@@ -45,7 +46,24 @@ export default async function IndividualPaymentSuccessPage({ params, searchParam
     if (updateError) return <State title="Payment received" message="Stripe confirms the charge but the roster update needs organizer attention." />;
 
     const { data: team } = await admin.from("individual_teams").select("team_name").eq("id", id).maybeSingle();
-    return <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300"><CheckCircle2 size={34} /></div><h1 className="mt-6 text-4xl font-black">You joined the team</h1><p className="mt-3 leading-7 text-zinc-400">Your place in {team?.team_name ?? "this team"} is paid. Your name is now shown on the public roster.</p><p className="mt-2 text-xs text-zinc-500">Payment reference: {intent.id}</p><Link href={`/individuals/teams/${id}`} className="mt-7 inline-flex rounded-xl bg-[#ffcf27] px-5 py-3 font-bold text-[#101522]">View public team</Link></main>;
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://football-session.vercel.app").replace(/\/$/, "");
+    const shareMessage = [
+      `⚽ I just joined the "${team?.team_name ?? "MOTM"}" team!`,
+      `See the team and join us: ${siteUrl}/individuals/teams/${id}`,
+      "#MOTM"
+    ].join("\n");
+    return (
+      <main className="mx-auto max-w-xl px-6 py-20 text-center motion-rise">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300"><CheckCircle2 size={34} /></div>
+        <h1 className="mt-6 text-4xl font-black">You joined the team</h1>
+        <p className="mt-3 leading-7 text-zinc-400">Your place in {team?.team_name ?? "this team"} is paid. Your name is now shown on the public roster.</p>
+        <p className="mt-2 text-xs text-zinc-500">Payment reference: {intent.id}</p>
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <WhatsAppShareButton message={shareMessage} />
+          <Link href={`/individuals/teams/${id}`} className="inline-flex rounded-xl border border-zinc-700 px-5 py-3 font-bold transition hover:bg-zinc-900">View public team</Link>
+        </div>
+      </main>
+    );
   } catch (error) {
     console.error("Individual membership payment verification error:", error);
     return <State title="Could not verify payment" message="Stripe returned an error while verifying your payment. Contact the organizer if your card was charged." />;
