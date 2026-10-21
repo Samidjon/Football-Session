@@ -56,7 +56,7 @@ export default function HomePage() {
 
           <div className="relative mx-auto w-full max-w-md">
             <div className="absolute -inset-5 rounded-[2.5rem] bg-blue-600/20 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-[#ffcf27]/25 bg-gradient-to-br from-[#1559ad] via-[#104b97] to-[#071b38] p-7 shadow-[0_25px_100px_rgba(10,77,164,0.22)] sm:p-10">
+            <div className="motm-home-brand-card relative overflow-hidden rounded-[2rem] border border-[#ffcf27]/25 bg-gradient-to-br from-[#1559ad] via-[#104b97] to-[#071b38] p-7 shadow-[0_25px_100px_rgba(10,77,164,0.22)] sm:p-10">
               <Image src="/football-ball.png" alt="Football" width={96} height={96} className="motm-ball-float absolute -right-2 top-4 z-10 h-16 w-16 opacity-90 drop-shadow-[0_8px_24px_rgba(35,84,255,0.35)] sm:right-2 sm:top-5 sm:h-20 sm:w-20" />
               <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[24px] border-[#ffcf27]/15" />
               <div className="relative mx-auto aspect-square w-full max-w-[270px] overflow-hidden rounded-3xl bg-white p-2 shadow-2xl shadow-black/30">
