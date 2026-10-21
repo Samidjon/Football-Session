@@ -10,7 +10,7 @@ alter table public.session_photos drop constraint if exists session_photos_image
 alter table public.session_photos add constraint session_photos_image_source_check
   check (
     (storage_path is not null and image_url is null)
-    or (storage_path is null and image_url ~* '^https?://')
+    or (storage_path is null and image_url is not null and image_url ~* '^https?://')
   );
 
 create unique index if not exists session_photos_session_image_url_idx

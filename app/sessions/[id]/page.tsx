@@ -17,6 +17,10 @@ export default async function SessionDetailsPage({ params }: { params: Promise<{
   ]);
   if (!sessionData) notFound();
   const session = sessionData as Session;
+  const { data: viewerProfile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
+    : { data: null };
+  const canManageSessionImages = viewerProfile?.role === "organizer" && session.created_by === user?.id;
   const teams = (teamsData ?? []) as Team[];
   const perTeamCounts = await Promise.all(teams.map(async (team) => {
     const { count } = await supabase.from("team_memberships").select("id", { count: "exact", head: true }).eq("team_id", team.id).eq("status", "paid");
@@ -68,7 +72,7 @@ export default async function SessionDetailsPage({ params }: { params: Promise<{
           </div>
         </aside>
       </div>
-      <div className="mt-8"><SessionPhotos sessionId={id} /></div>
+      <div className="mt-8"><SessionPhotos sessionId={id} editable={canManageSessionImages} /></div>
     </main>
   );
 }
