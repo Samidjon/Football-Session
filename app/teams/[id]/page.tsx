@@ -213,7 +213,7 @@ export default async function TeamPage({
               </span>
             ) : !user ? (
               <Link
-                href="/auth/login"
+                href={`/auth/login?next=/teams/${id}`}
                 className="rounded-xl bg-[#ffcf27] px-5 py-3 text-sm font-black text-[#101522] transition hover:bg-[#ffe477]"
               >
                 Sign in to join
