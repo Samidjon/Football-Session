@@ -24,10 +24,14 @@ export function StripePayment({ teamId, mode = "session" }: { teamId: string; mo
     async function createIntent() {
       try {
         setLoading(true);
+        const inviteCode = mode === "individual" ? null : window.sessionStorage.getItem(`motm-team-room-code:${teamId}`);
+        if (mode === "session" && !inviteCode) {
+          throw new Error("Room code required. Return to the team page and click Join Team to enter the code from the captain.");
+        }
         const response = await fetch(mode === "individual" ? "/api/stripe/create-individual-payment-intent" : "/api/stripe/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(mode === "individual" ? { individualTeamId: teamId } : { teamId })
+          body: JSON.stringify(mode === "individual" ? { individualTeamId: teamId } : { teamId, inviteCode })
         });
 
         const data = await response.json();
