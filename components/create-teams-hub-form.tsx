@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CalendarDays, KeyRound, Plus, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -75,7 +76,7 @@ export function CreateTeamsHubForm({ sessions, isSignedIn }: { sessions: Session
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#ffcf27]/10 text-[#ffcf27]"><Plus size={24} /></span>
         <div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ffcf27]">Captain’s corner</p><h2 className="mt-1 text-2xl font-black">Create a team</h2><p className="mt-2 text-sm leading-6 text-zinc-400">Choose the session your squad is playing in and set a private room code. Your team will appear in the Teams directory and on that session’s team board.</p></div>
       </div>
-      {!isSignedIn && <div className="mt-5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-100">Sign in is required to create a team. Your form will be available after you log in.</div>}
+      {!isSignedIn && <div className="mt-5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-100">Sign in is required to create a team. <Link href="/auth/login?next=/teams" className="ml-1 font-bold text-[#ffcf27] underline underline-offset-4">Sign in to continue</Link></div>}
       {sessions.length === 0 ? (
         <div className="mt-5 rounded-xl border border-dashed border-zinc-700 p-5 text-sm text-zinc-400">There are no open sessions to attach a team to yet. Please check back when a session is published.</div>
       ) : (
