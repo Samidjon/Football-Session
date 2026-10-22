@@ -11,6 +11,7 @@ type SessionInfo = {
   end_time: string;
   venue: string;
   players_per_team: number;
+  deposit_amount: number;
   status: string;
 };
 
@@ -28,10 +29,10 @@ export default async function TeamsPage() {
   const supabase = await createClient();
   const [{ data: { user } }, { data: sessionsData }, { data: teamData }] = await Promise.all([
     supabase.auth.getUser(),
-    supabase.from("sessions").select("id,title,match_date,start_time,end_time,venue,players_per_team,status")
+    supabase.from("sessions").select("id,title,match_date,start_time,end_time,venue,players_per_team,deposit_amount,status")
       .in("status", ["open", "full"]).order("match_date", { ascending: true }).order("start_time", { ascending: true }),
     supabase.from("teams")
-      .select("id,team_name,registration_status,player_limit,created_at,session_id,sessions(id,title,match_date,start_time,end_time,venue,players_per_team,status)")
+      .select("id,team_name,registration_status,player_limit,created_at,session_id,sessions(id,title,match_date,start_time,end_time,venue,players_per_team,deposit_amount,status)")
       .eq("creation_source", "teams")
       .neq("registration_status", "cancelled")
       .order("created_at", { ascending: false }),
@@ -120,7 +121,7 @@ export default async function TeamsPage() {
                   {session && <div className="mt-5 space-y-2 text-sm text-zinc-400"><p className="flex items-start gap-2"><CalendarDays size={15} className="mt-0.5 shrink-0 text-[#ffcf27]" />{formatDate(session.match_date)} · {session.start_time.slice(0,5)}–{session.end_time.slice(0,5)}</p><p className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0 text-[#ffcf27]" />{session.venue}</p></div>}
                   <div className="mt-5 grid grid-cols-2 gap-3">
                     <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3"><p className="text-xs text-zinc-500">Roster</p><p className="mt-1 text-lg font-black">{count.paid} / {cap}</p></div>
-                    <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3"><p className="text-xs text-zinc-500">Per player</p><p className="mt-1 text-lg font-black text-[#ffcf27]">{session ? `RM ${Number((session as SessionInfo & { deposit_amount?: number }).deposit_amount ?? 0).toFixed(2)}` : "See session"}</p></div>
+                    <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3"><p className="text-xs text-zinc-500">Per player</p><p className="mt-1 text-lg font-black text-[#ffcf27]">{session ? `RM ${Number(session.deposit_amount).toFixed(2)}` : "See session"}</p></div>
                   </div>
                   <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-800"><div className="h-full rounded-full bg-[#ffcf27] transition-all" style={{ width: `${Math.min(100, count.paid / Math.max(cap, 1) * 100)}%` }} /></div>
                   <Link href={`/teams/${team.id}`} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-700 px-4 py-3 text-sm font-bold transition hover:border-[#ffcf27]/50 hover:bg-[#ffcf27]/5">View Team <ArrowRight size={16} /></Link>
