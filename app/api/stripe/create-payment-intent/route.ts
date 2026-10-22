@@ -9,8 +9,11 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 export async function POST(request: Request) {
   try {
     if (!stripe) return NextResponse.json({ error: "Stripe is not configured. Add STRIPE_SECRET_KEY." }, { status: 500 });
-    const { teamId } = await request.json();
+    const { teamId, inviteCode } = await request.json();
     if (!teamId) return NextResponse.json({ error: "teamId is required" }, { status: 400 });
+    if (typeof inviteCode !== "string" || !/^[A-Z0-9-]{4,12}$/i.test(inviteCode.trim())) {
+      return NextResponse.json({ error: "Enter the team room code before continuing." }, { status: 403 });
+    }
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -44,7 +47,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ alreadyPaid: true, redirectTo: `/teams/${teamId}` });
     }
 
-    const { data: membershipId, error: reserveError } = await supabase.rpc("reserve_team_membership", { p_team_id: teamId });
+    const { data: membershipId, error: reserveError } = await supabase.rpc("reserve_team_membership_with_code", {
+      p_team_id: teamId,
+      p_invite_code: inviteCode.trim().toUpperCase(),
+    });
     if (reserveError || !membershipId) {
       // A concurrent successful payment may have finalized between our read and
       // the reservation RPC. Return the user to their now-active team safely.

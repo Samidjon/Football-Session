@@ -144,6 +144,13 @@ Any registered user can create a team for a session, then join a team by paying 
 
 If an Organizer cannot create or edit sessions, apply `supabase/migrations/20261015_restore_organizer_and_join_policies.sql` after the team-capacity migration. Check that the intended profile still has `role = 'organizer'`; normal user accounts should have role `user`.
 
+### Teams directory and room-code join gate
+
+- `/teams` lists only teams created from the Teams section. Each team is linked to a published football session and also appears on that session's team board.
+- A captain can create a team, choose its session and capacity, and set a private room code. The team roster is visible on **View Team**. **Join Team** opens the room-code form; the code is verified before the player can continue to Stripe checkout.
+- To deploy this flow, apply `supabase/migrations/20261022_team_invite_codes.sql` first, then `supabase/migrations/20261022_teams_directory_join_code_gate.sql`. The latter adds the `creation_source` discriminator and makes the server-side membership reservation require the room code.
+- Existing teams are backfilled into the `session` source and remain visible from their session pages, but aren't placed in the new Teams directory unless they were created through the Teams section.
+
 ### Team invite codes migration
 
 Before deploying the Teams invite-code update, apply `supabase/migrations/20261022_team_invite_codes.sql` in the Supabase SQL Editor. It creates private invite-code storage, assigns codes to existing session teams, and adds the protected lookup and captain-management functions. Apply it after the existing migrations through `20261015_restore_organizer_and_join_policies.sql`. Do not expose `team_invite_codes` directly to client queries; the application uses the restricted RPC functions instead.

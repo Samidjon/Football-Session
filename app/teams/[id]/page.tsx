@@ -11,6 +11,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { TeamInviteCodePanel } from "@/components/team-invite-code-panel";
+import { TeamJoinCodeGate } from "@/components/team-join-code-gate";
 
 export default async function TeamPage({
   params,
@@ -212,7 +213,7 @@ export default async function TeamPage({
               </span>
             ) : !user ? (
               <Link
-                href="/auth/login"
+                href={`/auth/login?next=/teams/${id}`}
                 className="rounded-xl bg-[#ffcf27] px-5 py-3 text-sm font-black text-[#101522] transition hover:bg-[#ffe477]"
               >
                 Sign in to join
@@ -230,14 +231,7 @@ export default async function TeamPage({
                 All team slots are counted
               </span>
             ) : (
-              <Link
-                href={`/teams/${id}/payment`}
-                className="rounded-xl bg-[#ffcf27] px-5 py-3 text-sm font-black text-[#101522] shadow-[0_8px_30px_rgba(255,207,39,0.12)] transition hover:-translate-y-0.5 hover:bg-[#ffe477]"
-              >
-                {ownMembership?.status === "pending_payment"
-                  ? "Continue payment"
-                  : `Join and pay · RM ${Number(session.deposit_amount).toFixed(2)}`}
-              </Link>
+              <TeamJoinCodeGate teamId={id} />
             )}
           </div>
         </div>
