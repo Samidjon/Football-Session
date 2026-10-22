@@ -102,9 +102,12 @@ Use Stripe test keys until payment handling has been tested end-to-end. Before a
 MOTM project. Add a license file before distributing the source under an open-source license.
 
 
-## Individuals
+## Teams and Individuals
 
-The **Individuals** page is a public directory of football sessions. Anyone can browse upcoming sessions and open a session to reserve a place or create a team. Only accounts with the existing **Organizer** role can create, edit, or delete sessions. The directory uses the same session records and permission checks as the main Sessions area.
+- **Teams** (`/teams`) is the public football-session directory. Users can open a session, create a squad for that session, and choose a private invite code (4–12 letters, numbers, or hyphens). Players enter the code on the Teams page to find the captain's squad. Each player reserves and pays for their own place; only successfully paid players appear in the roster.
+- **Individuals** (`/individuals`) is a separate directory of open teams. Any signed-in user can create a team for free, choose its capacity, and invite people using its public team page. Each player pays their own fee before being added to the roster.
+- Team invite codes live in the private `team_invite_codes` table. Only the team captain can retrieve or change their code; the public lookup function returns the team ID, not the code itself.
+- The per-player fee for Individuals is controlled by the organizer through the existing `individual_settings` record.
 
 Each session detail page includes a MOTM social-sharing illustration. Organizers can add direct image URLs and optional captions from the session edit page; regular visitors can view the images but cannot add or remove them.
 
@@ -140,3 +143,7 @@ Any registered user can create a team for a session, then join a team by paying 
 ## Organizer permissions recovery
 
 If an Organizer cannot create or edit sessions, apply `supabase/migrations/20261015_restore_organizer_and_join_policies.sql` after the team-capacity migration. Check that the intended profile still has `role = 'organizer'`; normal user accounts should have role `user`.
+
+### Team invite codes migration
+
+Before deploying the Teams invite-code update, apply `supabase/migrations/20261022_team_invite_codes.sql` in the Supabase SQL Editor. It creates private invite-code storage, assigns codes to existing session teams, and adds the protected lookup and captain-management functions. Apply it after the existing migrations through `20261015_restore_organizer_and_join_policies.sql`. Do not expose `team_invite_codes` directly to client queries; the application uses the restricted RPC functions instead.

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { TeamInviteCodePanel } from "@/components/team-invite-code-panel";
 
 export default async function TeamPage({
   params,
@@ -241,6 +242,8 @@ export default async function TeamPage({
           </div>
         </div>
       </section>
+
+      {isCreator && <TeamInviteCodePanel teamId={id} />}
 
       <section className="motion-rise motion-delay-1 mt-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
